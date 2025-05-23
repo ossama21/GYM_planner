@@ -104,17 +104,25 @@ A comprehensive fitness companion app that helps you plan workouts, track progre
 
 ## Installation
 
+> **⚠️ IMPORTANT: This app is currently under active development.**  
+> No stable version is published yet and no APK is currently available for download.  
+> This documentation is for development and preview purposes only.
+
 ### Requirements
 - Android 6.0 (Marshmallow) or higher
-- ~50MB free storage space
+- ~280MB free storage space
 
-### Install from Google Play
-<a href='https://play.google.com/store/apps/details?id=com.H_Oussama.gymplanner'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height='80px'/></a>
+### Future Release Plans
+- The app will be available on Google Play Store once development is completed
+- Beta testing opportunities will be announced through the GitHub repository
+- A downloadable APK will be made available in the Releases section once testing is complete
 
-### Manual Installation
-1. Download the latest APK from the [Releases](https://github.com/username/GYM_planner/releases) page
-2. Enable installation from unknown sources in your device settings
-3. Open the APK file and follow the installation instructions
+### For Developers
+If you want to build the app from source:
+
+1. Follow the Development Setup instructions below
+2. Be aware that APIs and features may change significantly before the first stable release
+3. Report any issues on the GitHub Issues page
 
 ## Development Setup
 
@@ -168,7 +176,7 @@ Please ensure your code follows the project's coding style and includes appropri
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
@@ -180,6 +188,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contact
 
-Developer: H_Oussama
-Email: youremail@example.com
-GitHub: [Your GitHub Profile](https://github.com/username) 
+Developer: H_Oussama,
+Email: ossamahattan@gmail.com
+GitHub: [My GitHub Profile](https://github.com/ossama21) 
