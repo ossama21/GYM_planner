@@ -2,7 +2,7 @@
 
 A comprehensive fitness companion app that helps you plan workouts, track progress, monitor nutrition, and achieve your fitness goals.
 
-<img src="screenshots/app_banner.png" width="600" alt="App Banner">
+<img src="screenshots/app_banner.png" width="400" alt="App Banner">
 
 ## Features
 
