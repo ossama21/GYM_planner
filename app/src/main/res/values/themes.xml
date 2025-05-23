@@ -1,0 +1,54 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <!-- Inherit from a Material 3 theme -->
+    <style name="Theme.GymGenius" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Material 3 attributes (adjust colors as needed in colors.xml) -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryContainer">@color/purple_700</item>
+        <item name="colorOnPrimaryContainer">@color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondaryContainer">@color/teal_700</item>
+        <item name="colorOnSecondaryContainer">@color/black</item>
+        <item name="colorTertiary">@color/blue_500</item> <!-- Example, define blue_500 in colors.xml -->
+        <item name="colorOnTertiary">@color/white</item>
+        <item name="colorTertiaryContainer">@color/blue_700</item> <!-- Example, define blue_700 in colors.xml -->
+        <item name="colorOnTertiaryContainer">@color/white</item>
+        <item name="colorError">@color/red_600</item> <!-- Example, define red_600 in colors.xml -->
+        <item name="colorOnError">@color/white</item>
+        <item name="colorErrorContainer">@color/red_200</item> <!-- Example, define red_200 in colors.xml -->
+        <item name="colorOnErrorContainer">@color/black</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorOnBackground">@color/black</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
+        <item name="colorSurfaceVariant">@color/gray_200</item> <!-- Example, define gray_200 in colors.xml -->
+        <item name="colorOnSurfaceVariant">@color/black</item>
+        <item name="colorOutline">@color/gray_500</item> <!-- Example, define gray_500 in colors.xml -->
+
+        <!-- Status bar color (optional, can be controlled in Compose) -->
+        <!-- <item name="android:statusBarColor">?attr/colorPrimaryContainer</item> -->
+        <!-- Navigation bar color (optional) -->
+        <!-- <item name="android:navigationBarColor">?attr/colorSurface</item> -->
+
+        <!-- Ensure windowBackground is set if needed, especially if not using Compose for the main Activity background -->
+        <!-- <item name="android:windowBackground">?attr/colorSurface</item> -->
+
+        <!-- Font attributes (optional) -->
+        <!-- <item name="textAppearanceHeadline1">@style/TextAppearance.Material3.HeadlineLarge</item> -->
+        <!-- Add other typography and shape attributes as needed -->
+    </style>
+
+    <!-- Splash screen theme (fullscreen with no action bar) -->
+    <style name="Theme.GymGenius.NoActionBar" parent="Theme.GymGenius">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
+
+    <!-- You might also need a theme for night mode in res/values-night/themes.xml -->
+    <!-- inheriting from Theme.Material3.Dark.NoActionBar -->
+
+</resources>

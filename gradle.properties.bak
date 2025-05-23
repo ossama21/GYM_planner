@@ -1,0 +1,23 @@
+# Project-wide Gradle settings.
+# For more details on how to configure your build environment visit
+# https://docs.gradle.org/current/userguide/build_environment.html
+
+# Recommended Android Gradle plugin settings
+# Enables the use of AndroidX libraries
+android.useAndroidX=true
+# Automatically migrates old support libraries to AndroidX
+android.enableJetifier=true
+# Suppress warnings for using compileSdk 35 with AGP 8.1.4
+android.suppressUnsupportedCompileSdk=35
+
+# Increase Gradle Daemon JVM heap size
+# Use -Xmx2g for 2GB, -Xmx4g for 4GB, etc., depending on your system RAM
+org.gradle.jvmargs=-Xmx2g -Dkotlin.daemon.jvm.options="-Xmx2g"
+org.gradle.parallel=true
+org.gradle.daemon=true
+org.gradle.configureondemand=true
+org.gradle.configuration-cache=true
+
+# Kotlin settings
+kotlin.code.style=official
+android.nonTransitiveRClass=true 

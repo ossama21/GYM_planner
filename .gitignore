@@ -1,0 +1,11 @@
+/error.md
+/hs_err_pid13536.log
+/hs_err_pid15752.log
+/hs_err_pid7224.log
+/logcat.md
+/terminal.md
+*.apk
+*.hprof
+/app/build/
+/app/release/
+/build/

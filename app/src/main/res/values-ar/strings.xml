@@ -1,0 +1,167 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">مخطط الصالة الرياضية</string>
+    
+    <!-- Common -->
+    <string name="cancel">إلغاء</string>
+    <string name="save">حفظ</string>
+    <string name="close">إغلاق</string>
+    <string name="delete">حذف</string>
+    <string name="edit">تعديل</string>
+    <string name="confirm">تأكيد</string>
+    <string name="dismiss">تجاهل</string>
+    <string name="set">تعيين</string>
+    <string name="add">إضافة</string>
+    <string name="example">مثال</string>
+    <string name="import_text">استيراد</string>
+    <string name="search">بحث</string>
+    <string name="reset">إعادة ضبط</string>
+    <string name="process">معالجة</string>
+    <string name="processing">جاري المعالجة...</string>
+    <string name="search_web">البحث في الويب</string>
+    <string name="image_not_found">الصورة غير موجودة</string>
+    <string name="start">ابدأ</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="keep">إبقاء</string>
+    
+    <!-- Navigation -->
+    <string name="workout">التمرين</string>
+    <string name="calculators">الحاسبات</string>
+    <string name="progress">التقدم</string>
+    <string name="settings">الإعدادات</string>
+    <string name="workout_plan">خطة التمرين</string>
+    <string name="workout_log">سجل التمارين</string>
+    <string name="exercise_history">سجل التمارين</string>
+    
+    <!-- Calculator Screens -->
+    <string name="calculators_hub">الحاسبات</string>
+    <string name="bmi_calculator">حاسبة مؤشر كتلة الجسم</string>
+    <string name="tdee_calculator">حاسبة TDEE</string>
+    <string name="body_fat_calculator">حاسبة دهون الجسم</string>
+    <string name="bmi_result_title">نتيجة مؤشر كتلة الجسم</string>
+    <string name="calculate_body_fat">حساب نسبة دهون الجسم</string>
+    <string name="estimated_body_fat">نسبة دهون الجسم المقدرة</string>
+    <string name="bmr">معدل الأيض الأساسي (BMR)</string>
+    <string name="tdee">إجمالي الطاقة اليومي المستهلك (TDEE)</string>
+    
+    <!-- Settings Sections -->
+    <string name="account">الحساب</string>
+    <string name="preferences">التفضيلات</string>
+    <string name="training">التدريب</string>
+    <string name="app">التطبيق</string>
+    <string name="app_intro">مقدمة التطبيق</string>
+    <string name="ai_features">ميزات الذكاء الاصطناعي</string>
+    
+    <!-- Settings Items -->
+    <string name="profile">الملف الشخصي</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="units">الوحدات</string>
+    <string name="theme">المظهر</string>
+    <string name="language">اللغة</string>
+    <string name="workout_goals">أهداف التمرين</string>
+    <string name="add_exercise_images">إضافة المزيد من صور التمارين</string>
+    <string name="manage_exercise_images">إدارة صور التمارين</string>
+    <string name="exercises_by_category">التمارين</string>
+    <string name="help_support">المساعدة والدعم</string>
+    <string name="about">حول</string>
+    <string name="mute_intro_video">كتم صوت فيديو المقدمة</string>
+    <string name="intro_video_muted">فيديو المقدمة صامت</string>
+    <string name="intro_video_has_sound">فيديو المقدمة يحتوي على صوت</string>
+    <string name="change_intro_video">تغيير فيديو المقدمة</string>
+    <string name="select_different_intro">اختيار فيديو مقدمة مختلف</string>
+    <string name="gemini_api_settings">إعدادات واجهة برمجة Gemini</string>
+    <string name="api_key_configured">تم تكوين مفتاح API</string>
+    <string name="configure_api_key">تكوين مفتاح API</string>
+    <string name="api_key">مفتاح API</string>
+    <string name="test_save">اختبار وحفظ</string>
+    <string name="logout">تسجيل الخروج</string>
+    <string name="version">الإصدار 3.0</string>
+    
+    <!-- API Test Results -->
+    <string name="api_working">واجهة برمجة التطبيقات تعمل بشكل صحيح!</string>
+    <string name="api_failed">فشل اختبار API. تحقق من المفتاح الخاص بك.</string>
+    <string name="api_error">خطأ: %1$s</string>
+    <string name="api_testing">اختبار API جارٍ...</string>
+    <string name="api_not_tested">لم يتم الاختبار</string>
+    
+    <!-- Languages -->
+    <string name="language_english">الإنجليزية</string>
+    <string name="language_french">الفرنسية</string>
+    <string name="language_arabic">العربية</string>
+    
+    <!-- About Dialog -->
+    <string name="about_title">حول مخطط الصالة الرياضية</string>
+    <string name="about_description">مخطط الصالة الرياضية هو تطبيق شامل لتخطيط وتتبع التمارين مصمم لمساعدتك على تحقيق أهدافك اللياقة البدنية.</string>
+    <string name="version_text">الإصدار: 3.0</string>
+    <string name="developer">تم التطوير بواسطة: H_Oussama</string>
+    <string name="developer_email">البريد الإلكتروني: ossamahattan@gmail.com</string>
+    <string name="developer_github">GitHub: https://github.com/ossama21</string>
+    <string name="features">الميزات:</string>
+    <string name="feature_1">• خطط تمرين قابلة للتخصيص</string>
+    <string name="feature_2">• تتبع التمارين مع السجل</string>
+    <string name="feature_3">• مؤقت الراحة مع إشعارات صوتية</string>
+    <string name="feature_4">• تتبع التقدم والإحصاءات</string>
+    <string name="feature_5">• إعدادات شخصية</string>
+    <string name="thank_you">شكرًا لاستخدامك مخطط الصالة الرياضية!</string>
+    
+    <!-- Help Dialog -->
+    <string name="help_title">المساعدة والدعم</string>
+    <string name="help_description">هل تحتاج إلى مساعدة مع مخطط الصالة الرياضية؟ إليك بعض الموارد لمساعدتك:</string>
+    <string name="faq">الأسئلة المتكررة:</string>
+    <string name="faq_1">• كيف أنشئ خطة تمرين مخصصة؟</string>
+    <string name="faq_2">• كيف يمكنني تتبع تقدمي؟</string>
+    <string name="faq_3">• كيف أقوم بإعداد الإشعارات؟</string>
+    <string name="contact_support">الاتصال بالدعم:</string>
+    <string name="support_email">البريد الإلكتروني: support@gymplanner.com</string>
+    <string name="response_time">وقت الاستجابة: خلال 24 ساعة</string>
+    <string name="user_guide">دليل المستخدم:</string>
+    <string name="user_guide_text">يمكنك الوصول إلى دليل المستخدم الكامل في إعدادات التطبيق.</string>
+    <string name="community">المجتمع:</string>
+    <string name="community_text">انضم إلى منتدى المجتمع للتواصل مع المستخدمين الآخرين ومشاركة النصائح.</string>
+    
+    <!-- Profile -->
+    <string name="delete_account">حذف الحساب</string>
+    <string name="weight">الوزن</string>
+    <string name="select_goal">اختر هدفًا</string>
+    <string name="goal">الهدف</string>
+    <string name="workouts_per_week">التمارين/الأسبوع</string>
+    <string name="years">سنة</string>
+    
+    <!-- Notifications -->
+    <string name="reset_default">إعادة تعيين إلى الإعدادات الافتراضية</string>
+    
+    <!-- Workout Execution -->
+    <string name="custom_weight">وزن مخصص</string>
+    <string name="repetitions">التكرارات</string>
+    <string name="yes_done">نعم، انتهيت</string>
+    <string name="keep_reviewing">متابعة المراجعة</string>
+    <string name="end">إنهاء</string>
+    <string name="skip_rest">تخطي الراحة</string>
+    
+    <!-- Workout Management -->
+    <string name="delete_workout_plan">حذف خطة التمرين</string>
+    <string name="delete_workout_confirm">هل أنت متأكد من رغبتك في حذف خطة التمرين الخاصة بك؟ لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="paste_workout_plan">الصق خطة التمرين هنا</string>
+    
+    <!-- Workout Log -->
+    <string name="add_workout">+</string>
+    <string name="workout_name">اسم التمرين</string>
+    <string name="duration_minutes">المدة (بالدقائق)</string>
+    
+    <!-- Weight Tracker -->
+    <string name="weight_kg">الوزن (كجم)</string>
+    <string name="note_optional">ملاحظة (اختياري)</string>
+    
+    <!-- Nutrition -->
+    <string name="debug_meal_info">تصحيح: عرض معلومات الوجبة</string>
+    <string name="testing_gemini">اختبار واجهة برمجة Gemini. تحقق من logcat للنتائج.</string>
+    <string name="daily_calorie_goal">هدف السعرات الحرارية اليومي</string>
+    <string name="describe_food">وصف طعامك للذكاء الاصطناعي</string>
+    <string name="search_food">ابحث عن طعامك</string>
+    <string name="food_description_hint">مثال: صدر دجاج مشوي مع أرز</string>
+    
+    <!-- Theme -->
+    <string name="button">زر</string>
+    <string name="apply_theme">تطبيق المظهر</string>
+</resources> 

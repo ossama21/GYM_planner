@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option java_package = "com.h_oussama.gymplanner.datastore";
+option java_multiple_files = true;
+
+message ExerciseInstanceProto {
+  string exercise_id = 1;
+  string sets_description = 2;
+  int32 rest_time_seconds = 3;
+}
+
+message WorkoutDayProto {
+  string day_name = 1;
+  repeated ExerciseInstanceProto exercises = 2;
+}
+
+message WorkoutPlanProto {
+  string plan_name = 1;
+  repeated WorkoutDayProto days = 2;
+} 
+ 
+ 
+ 

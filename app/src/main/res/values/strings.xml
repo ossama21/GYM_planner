@@ -1,0 +1,191 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">Gym Planner</string>
+    
+    <!-- Common -->
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="close">Close</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="confirm">Confirm</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="set">Set</string>
+    <string name="add">Add</string>
+    <string name="example">Example</string>
+    <string name="import_text">Import</string>
+    <string name="search">Search</string>
+    <string name="reset">Reset</string>
+    <string name="process">Process</string>
+    <string name="processing">Processing...</string>
+    <string name="search_web">Search Web</string>
+    <string name="image_not_found">Image not found</string>
+    <string name="start">START</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="keep">Keep</string>
+    
+    <!-- Navigation -->
+    <string name="workout">Workout</string>
+    <string name="calculators">Calculators</string>
+    <string name="progress">Progress</string>
+    <string name="settings">Settings</string>
+    <string name="workout_plan">Workout Plan</string>
+    <string name="workout_log">Workout Log</string>
+    <string name="exercise_history">Exercise History</string>
+    
+    <!-- Calculator Screens -->
+    <string name="calculators_hub">Calculators</string>
+    <string name="bmi_calculator">BMI Calculator</string>
+    <string name="tdee_calculator">TDEE Calculator</string>
+    <string name="body_fat_calculator">Body Fat Calculator</string>
+    <string name="bmi_result_title">Your BMI Result</string>
+    <string name="calculate_body_fat">Calculate Body Fat %</string>
+    <string name="estimated_body_fat">Estimated Body Fat Percentage</string>
+    <string name="bmr">Basal Metabolic Rate (BMR)</string>
+    <string name="tdee">Total Daily Energy Expenditure (TDEE)</string>
+    
+    <!-- Settings Sections -->
+    <string name="account">Account</string>
+    <string name="preferences">Preferences</string>
+    <string name="training">Training</string>
+    <string name="app">App</string>
+    <string name="app_intro">App Intro</string>
+    <string name="ai_features">AI Features</string>
+    
+    <!-- Settings Items -->
+    <string name="profile">Profile</string>
+    <string name="notifications">Notifications</string>
+    <string name="units">Units</string>
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
+    <string name="workout_goals">Workout Goals</string>
+    <string name="add_exercise_images">Add More Exercise Images</string>
+    <string name="manage_exercise_images">Manage Exercise Images</string>
+    <string name="exercises_by_category">Exercises</string>
+    <string name="help_support">Help &amp; Support</string>
+    <string name="about">About</string>
+    <string name="mute_intro_video">Mute Intro Video</string>
+    <string name="intro_video_muted">Intro video is muted</string>
+    <string name="intro_video_has_sound">Intro video has sound</string>
+    <string name="change_intro_video">Change Intro Video</string>
+    <string name="select_different_intro">Select a different intro video</string>
+    <string name="gemini_api_settings">Gemini API Settings</string>
+    <string name="api_key_configured">API Key is configured</string>
+    <string name="configure_api_key">Configure API Key</string>
+    <string name="api_key">API Key</string>
+    <string name="test_save">Test &amp; Save</string>
+    <string name="logout">Logout</string>
+    <string name="version">Version 4.0</string>
+    
+    <!-- Additional Settings Screens -->
+    <string name="account_settings">Account Settings</string>
+    <string name="notifications_settings">Notifications Settings</string>
+    <string name="theme_settings">Theme Settings</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="support_help">Help &amp; Support</string>
+    <string name="data_backup">Data Backup</string>
+    <string name="achievements">Achievements</string>
+    <string name="changelog">Version History</string>
+    <string name="changelog_title">Version History</string>
+    
+    <!-- API Test Results -->
+    <string name="api_working">API working correctly!</string>
+    <string name="api_failed">API test failed. Check your key.</string>
+    <string name="api_error">Error: %1$s</string>
+    <string name="api_testing">Testing API...</string>
+    <string name="api_not_tested">Not tested</string>
+    
+    <!-- Languages -->
+    <string name="language_english">English</string>
+    <string name="language_french">French</string>
+    <string name="language_arabic">Arabic</string>
+    
+    <!-- About Dialog -->
+    <string name="about_title">About GYM Planner</string>
+    <string name="about_description">GYM Planner is a comprehensive workout planning and tracking app designed to help you achieve your fitness goals.</string>
+    <string name="version_text">Version: 4.0</string>
+    <string name="developer">Developed by: H_Oussama</string>
+    <string name="developer_email">Email: ossamahattan@gmail.com</string>
+    <string name="developer_github">GitHub: github.com/ossama21</string>
+    <string name="features">Features:</string>
+    <string name="feature_1">• Customizable workout plans</string>
+    <string name="feature_2">• Exercise tracking with history</string>
+    <string name="feature_3">• Rest timer with sound notifications</string>
+    <string name="feature_4">• Progress tracking and statistics</string>
+    <string name="feature_5">• Personalized settings</string>
+    <string name="thank_you">Thank you for using GYM Planner!</string>
+    
+    <!-- Help Dialog -->
+    <string name="help_title">Help &amp; Support</string>
+    <string name="help_description">Need help with GYM Planner? Here are some resources to assist you:</string>
+    <string name="faq">Frequently Asked Questions:</string>
+    <string name="faq_1">• How do I create a custom workout plan?</string>
+    <string name="faq_2">• How can I track my progress?</string>
+    <string name="faq_3">• How do I set up notifications?</string>
+    <string name="contact_support">Contact Support:</string>
+    <string name="support_email">Email: support@gymplanner.com</string>
+    <string name="response_time">Response time: Within 24 hours</string>
+    <string name="user_guide">User Guide:</string>
+    <string name="user_guide_text">Access the complete user guide in the app settings.</string>
+    <string name="community">Community:</string>
+    <string name="community_text">Join our community forum to connect with other users and share tips.</string>
+    
+    <!-- Profile -->
+    <string name="delete_account">Delete Account</string>
+    <string name="weight">Weight</string>
+    <string name="select_goal">Select Goal</string>
+    <string name="goal">Goal</string>
+    <string name="workouts_per_week">Workouts/Week</string>
+    <string name="years">years</string>
+    
+    <!-- Notifications -->
+    <string name="reset_default">Reset to Default Settings</string>
+    
+    <!-- Workout Execution -->
+    <string name="custom_weight">Custom weight</string>
+    <string name="repetitions">Repetitions</string>
+    <string name="yes_done">Yes, I\'m Done</string>
+    <string name="keep_reviewing">Keep Reviewing</string>
+    <string name="end">End</string>
+    <string name="skip_rest">Skip Rest</string>
+    
+    <!-- Workout Management -->
+    <string name="delete_workout_plan">Delete Workout Plan</string>
+    <string name="delete_workout_confirm">Are you sure you want to delete your workout plan? This action cannot be undone.</string>
+    <string name="paste_workout_plan">Paste workout plan here</string>
+    
+    <!-- Workout Log -->
+    <string name="add_workout">+</string>
+    <string name="workout_name">Workout Name</string>
+    <string name="duration_minutes">Duration (minutes)</string>
+    
+    <!-- Weight Tracker -->
+    <string name="weight_kg">Weight (kg)</string>
+    <string name="note_optional">Note (optional)</string>
+    
+    <!-- Nutrition -->
+    <string name="debug_meal_info">Debug: Show Meal Info</string>
+    <string name="testing_gemini">Testing Gemini API. Check logcat for results.</string>
+    <string name="daily_calorie_goal">Daily Calorie Goal</string>
+    <string name="describe_food">Describe your food to AI</string>
+    <string name="search_food">Search your food</string>
+    <string name="food_description_hint">e.g., Grilled chicken breast with rice</string>
+    
+    <!-- Theme -->
+    <string name="button">Button</string>
+    <string name="apply_theme">Apply Theme</string>
+    
+    <!-- Other screens -->
+    <string name="image_search_demo">Image Search Demo</string>
+    <string name="workout_plan_editor">Create Workout Plan</string>
+    
+    <!-- Changelog -->
+    <string name="changelog_v4_0">Version 4.0:\n• Fixed white theme support in progress screens\n• Fixed white theme support in calculator main screen\n• Fixed white theme support in workout and exercise screens\n• Added version history section\n• Updated developer contact information</string>
+    <string name="changelog_v3_5">Version 3.5:\n• Fixed exercise GIF matching system\n• Added performance optimizations\n• Reduced app size\n• Improved UI responsiveness</string>
+    <string name="changelog_v3_0">Version 3.0:\n• Added nutrition tracking feature\n• Integrated AI-powered food recognition\n• Enhanced progress tracking capabilities\n• Added more exercise animations</string>
+</resources> 
+ 
+ 
+ 

@@ -1,0 +1,70 @@
+{
+    "Plan Name": "Mass Machine Beginner Program (5 Days)",
+    "Days": [
+        {
+            "Day": "Monday",
+            "Label": "Push Strength",
+            "Target": [
+                "chest",
+                "shoulders",
+                "triceps"
+            ],
+            "Exercises": [
+                {
+                    "name": "Barbell Bench Press",
+                    "sets": 4,
+                    "reps": "6-8",
+                    "rest": "90s"
+                },
+                {
+                    "name": "Lateral Raises",
+                    "sets": 3,
+                    "reps": "15",
+                    "rest": "45s"
+                },
+                {
+                    "name": "Tricep Pushdowns (Cable)",
+                    "sets": 3,
+                    "reps": "12-15",
+                    "rest": "60s"
+                }
+            ]
+        },
+        {
+            "Day": "Tuesday",
+            "Label": "Rest Day",
+            "Target": [
+                "recovery"
+            ]
+        },
+        {
+            "Day": "Wednesday",
+            "Label": "Pull Strength",
+            "Target": [
+                "back",
+                "biceps"
+            ],
+            "Exercises": [
+                {
+                    "name": "Deadlifts",
+                    "sets": 4,
+                    "reps": "5",
+                    "rest": "120s"
+                },
+                {
+                    "name": "Pull-ups",
+                    "sets": 3,
+                    "reps": "max",
+                    "rest": "90s"
+                }
+            ]
+        },
+        {
+            "Day": "Thursday",
+            "Label": "Rest Day",
+            "Target": [
+                "recovery"
+            ]
+        }
+    ]
+} 

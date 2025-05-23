@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "724997223413",
+    "project_id": "lingualeap-ovx03",
+    "storage_bucket": "lingualeap-ovx03.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724997223413:android:8eee166aab7db7828826bc",
+        "android_client_info": {
+          "package_name": "com.H_Oussama.gymplanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChqbqZa0teqgh99hjm4WWByMSbQWXVjE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:724997223413:android:cc0a6fb4d7fc63768826bc",
+        "android_client_info": {
+          "package_name": "com.h_oussama.gymplanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChqbqZa0teqgh99hjm4WWByMSbQWXVjE8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

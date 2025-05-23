@@ -1,0 +1,122 @@
+{
+  "planName": "Test Shoulder and Upper Back Workout",
+  "description": "A workout plan focused on shoulder and upper back exercises",
+  "workoutDays": [
+    {
+      "dayName": "Shoulder Day",
+      "exercises": [
+        {
+          "id": "ex1",
+          "name": "Shoulder Press",
+          "description": "Press the weight overhead",
+          "sets": 3,
+          "reps": "8-12",
+          "weight": 0,
+          "rest": 90
+        },
+        {
+          "id": "ex2",
+          "name": "Dumbbell raise",
+          "description": "Raise the weights to the sides",
+          "sets": 3,
+          "reps": "12-15",
+          "weight": 0,
+          "rest": 60,
+          "originalName": "Lateral Raises",
+          "imageIdentifier": "Dumbbell raise"
+        },
+        {
+          "id": "ex3",
+          "name": "Bent over rear delt fly gymstick",
+          "description": "Target the rear deltoids",
+          "sets": 3,
+          "reps": "12-15",
+          "weight": 0,
+          "rest": 60,
+          "originalName": "Rear Delt Fly",
+          "imageIdentifier": "Bent over rear delt fly gymstick"
+        },
+        {
+          "id": "ex4",
+          "name": "Barbell upright row",
+          "description": "Pull the bar to the chin",
+          "sets": 3,
+          "reps": "8-12",
+          "weight": 0,
+          "rest": 90,
+          "originalName": "Upright Row",
+          "imageIdentifier": "Barbell upright row"
+        },
+        {
+          "id": "ex5",
+          "name": "Barbell shrug",
+          "description": "Raise the shoulders towards the ears",
+          "sets": 3,
+          "reps": "10-12",
+          "weight": 0,
+          "rest": 90,
+          "originalName": "Shrugs",
+          "imageIdentifier": "Barbell shrug"
+        }
+      ]
+    },
+    {
+      "dayName": "Upper Back Day",
+      "exercises": [
+        {
+          "id": "ex6",
+          "name": "Face pull",
+          "description": "Pull the rope towards your face",
+          "sets": 3,
+          "reps": "12-15",
+          "weight": 0,
+          "rest": 90,
+          "originalName": "Face Pulls",
+          "imageIdentifier": "Face pull"
+        },
+        {
+          "id": "ex7",
+          "name": "Wide grip barbell bent over row plus",
+          "description": "Row the weight towards your chest",
+          "sets": 3,
+          "reps": "8-12",
+          "weight": 0,
+          "rest": 90,
+          "originalName": "Bent Over Row",
+          "imageIdentifier": "Wide grip barbell bent over row plus"
+        },
+        {
+          "id": "ex8",
+          "name": "Pull-ups",
+          "description": "Pull your body up to the bar",
+          "sets": 3,
+          "reps": "As many as possible",
+          "weight": 0,
+          "rest": 120
+        },
+        {
+          "id": "ex9",
+          "name": "Scapula pull-up",
+          "description": "Focus on engaging the scapula",
+          "sets": 2,
+          "reps": "8-12",
+          "weight": 0,
+          "rest": 90,
+          "originalName": "Scapula Pull-up",
+          "imageIdentifier": "Scapula pull-up"
+        },
+        {
+          "id": "ex10",
+          "name": "Incline dumbbell reverse fly",
+          "description": "Extend arms outward while bent over",
+          "sets": 3,
+          "reps": "12-15",
+          "weight": 0,
+          "rest": 90,
+          "originalName": "Reverse Fly",
+          "imageIdentifier": "Incline dumbbell reverse fly"
+        }
+      ]
+    }
+  ]
+}

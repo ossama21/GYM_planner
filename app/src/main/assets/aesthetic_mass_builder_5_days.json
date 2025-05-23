@@ -1,0 +1,269 @@
+{
+  "Plan Name": "Aesthetic Mass Builder (5 Days)",
+  "Days": [
+    {
+      "Day": "Monday",
+      "Label": "Back Width + Biceps",
+      "Target": [
+        "lats",
+        "biceps"
+      ],
+      "Exercises": [
+        {
+          "name": "Wide-Grip Pull-Ups",
+          "sets": 4,
+          "reps": "6-10",
+          "rest": "90s"
+        },
+        {
+          "name": "Lat Pulldowns",
+          "sets": 3,
+          "reps": "10-12",
+          "rest": "60s"
+        },
+        {
+          "name": "Straight Arm Cable Pulldown",
+          "sets": 3,
+          "reps": "12-15",
+          "rest": "60s"
+        },
+        {
+          "name": "Dumbbell Rows",
+          "sets": 3,
+          "reps": "10/side",
+          "rest": "90s"
+        },
+        {
+          "name": "Alternating Dumbbell Curls",
+          "sets": 3,
+          "reps": "10-12",
+          "rest": "60s"
+        },
+        {
+          "name": "Hammer Curls",
+          "sets": 3,
+          "reps": "12",
+          "rest": "60s"
+        },
+        {
+          "name": "Incline Curl Stretch Hold",
+          "sets": 2,
+          "reps": "30s hold each arm",
+          "rest": "30s"
+        }
+      ]
+    },
+    {
+      "Day": "Tuesday",
+      "Label": "Rest Day",
+      "Target": [
+        "recovery"
+      ]
+    },
+    {
+      "Day": "Wednesday",
+      "Label": "Chest + Shoulders",
+      "Target": [
+        "chest",
+        "shoulders"
+      ],
+      "Exercises": [
+        {
+          "name": "Incline Dumbbell Press",
+          "sets": 4,
+          "reps": "8-10",
+          "rest": "90s"
+        },
+        {
+          "name": "Flat Dumbbell Press",
+          "sets": 3,
+          "reps": "10",
+          "rest": "60s"
+        },
+        {
+          "name": "Chest Dips",
+          "sets": 3,
+          "reps": "10-12",
+          "rest": "60s"
+        },
+        {
+          "name": "Dumbbell Lateral Raises",
+          "sets": 4,
+          "reps": "12-15",
+          "rest": "45s"
+        },
+        {
+          "name": "Arnold Press",
+          "sets": 3,
+          "reps": "10-12",
+          "rest": "60s"
+        },
+        {
+          "name": "Cable Front Raises",
+          "sets": 2,
+          "reps": "15",
+          "rest": "45s"
+        }
+      ]
+    },
+    {
+      "Day": "Thursday",
+      "Label": "Rest Day",
+      "Target": [
+        "recovery"
+      ]
+    },
+    {
+      "Day": "Friday",
+      "Label": "Back Thickness + Traps + Rear Delts",
+      "Target": [
+        "mid-back",
+        "traps",
+        "rear delts"
+      ],
+      "Exercises": [
+        {
+          "name": "Barbell Rows",
+          "sets": 4,
+          "reps": "8-10",
+          "rest": "90s"
+        },
+        {
+          "name": "Chest-Supported Rows",
+          "sets": 3,
+          "reps": "10-12",
+          "rest": "60s"
+        },
+        {
+          "name": "Seated Cable Row (Wide Grip)",
+          "sets": 3,
+          "reps": "12",
+          "rest": "60s"
+        },
+        {
+          "name": "Face Pulls",
+          "sets": 3,
+          "reps": "15",
+          "rest": "45s"
+        },
+        {
+          "name": "Rear Delt Fly",
+          "sets": 3,
+          "reps": "15",
+          "rest": "45s"
+        },
+        {
+          "name": "Dumbbell Shrugs",
+          "sets": 4,
+          "reps": "15 (2s hold at top)",
+          "rest": "60s"
+        },
+        {
+          "name": "Back Extensions",
+          "sets": 2,
+          "reps": "15",
+          "rest": "60s"
+        }
+      ]
+    },
+    {
+      "Day": "Saturday",
+      "Label": "Legs + Core",
+      "Target": [
+        "legs",
+        "core"
+      ],
+      "Exercises": [
+        {
+          "name": "Bulgarian Split Squats",
+          "sets": 3,
+          "reps": "10/leg",
+          "rest": "90s"
+        },
+        {
+          "name": "Goblet Squats",
+          "sets": 3,
+          "reps": "12",
+          "rest": "60s"
+        },
+        {
+          "name": "Romanian Deadlifts",
+          "sets": 3,
+          "reps": "10",
+          "rest": "90s"
+        },
+        {
+          "name": "Seated Calf Raise",
+          "sets": 4,
+          "reps": "20",
+          "rest": "45s"
+        },
+        {
+          "name": "Hanging Leg Raises",
+          "sets": 3,
+          "reps": "15",
+          "rest": "60s"
+        },
+        {
+          "name": "Plank Hold",
+          "sets": 3,
+          "reps": "1 min hold",
+          "rest": "60s"
+        }
+      ]
+    },
+    {
+      "Day": "Sunday",
+      "Label": "Arms + Upper Chest",
+      "Target": [
+        "arms",
+        "upper chest",
+        "forearms"
+      ],
+      "Exercises": [
+        {
+          "name": "Incline Smith Machine Press",
+          "sets": 4,
+          "reps": "8-12",
+          "rest": "90s"
+        },
+        {
+          "name": "Cable Crossovers (Upper Angle)",
+          "sets": 3,
+          "reps": "12",
+          "rest": "60s"
+        },
+        {
+          "name": "Close-Grip Bench Press",
+          "sets": 3,
+          "reps": "8-10",
+          "rest": "90s"
+        },
+        {
+          "name": "Preacher Curl",
+          "sets": 3,
+          "reps": "12",
+          "rest": "60s"
+        },
+        {
+          "name": "Overhead Dumbbell Triceps Extension",
+          "sets": 3,
+          "reps": "12",
+          "rest": "60s"
+        },
+        {
+          "name": "Reverse Grip Pushdowns",
+          "sets": 3,
+          "reps": "15",
+          "rest": "45s"
+        },
+        {
+          "name": "Wrist Curls / Reverse Wrist Curls",
+          "sets": 2,
+          "reps": "15 each",
+          "rest": "30s"
+        }
+      ]
+    }
+  ]
+}

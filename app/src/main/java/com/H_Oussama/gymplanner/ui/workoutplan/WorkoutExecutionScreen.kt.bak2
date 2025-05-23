@@ -1,0 +1,1039 @@
+package com.H_Oussama.gymplanner.ui.workoutplan
+
+import android.content.Context
+import android.os.Build
+import android.util.Log as AndroidLog
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.NotificationsOff
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import com.H_Oussama.gymplanner.data.model.ExerciseDefinition
+import com.H_Oussama.gymplanner.data.model.ExerciseInstance
+import com.H_Oussama.gymplanner.ui.common.LoadingSpinner
+import com.H_Oussama.gymplanner.ui.common.ErrorCard
+import com.H_Oussama.gymplanner.ui.common.ExerciseImage
+import java.util.concurrent.TimeUnit
+import androidx.activity.compose.BackHandler
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.H_Oussama.gymplanner.data.model.MuscleGroup
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.zIndex
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import com.H_Oussama.gymplanner.ui.theme.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import androidx.compose.foundation.BorderStroke
+import android.content.Intent
+import android.net.Uri
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.ui.res.painterResource
+import com.H_Oussama.gymplanner.R
+import com.H_Oussama.gymplanner.utils.ExerciseImageDownloader
+import android.util.Log
+import com.H_Oussama.gymplanner.ui.common.ThemeUtils
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.H_Oussama.gymplanner.data.database.entity.ExerciseProgress
+import com.H_Oussama.gymplanner.data.database.entity.SessionExerciseSet
+import com.H_Oussama.gymplanner.data.database.entity.WorkoutSession
+import com.H_Oussama.gymplanner.data.exercise.ExerciseDefinition
+import com.H_Oussama.gymplanner.data.workout.WorkoutDayWithExercises
+import com.H_Oussama.gymplanner.data.workout.WorkoutPlanWithWorkoutDays
+import com.H_Oussama.gymplanner.ui.common.ThemeUtils.getTextColor
+import java.text.SimpleDateFormat
+import java.util.*
+import com.H_Oussama.gymplanner.ui.common.ColorUtils
+
+// Utility function to format time in mm:ss format
+private fun formatTime(seconds: Int): String {
+    val minutes = seconds / 60
+    val remainingSeconds = seconds % 60
+    return "%02d:%02d".format(minutes, remainingSeconds)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WorkoutExecutionScreen(
+    viewModel: WorkoutExecutionViewModel = hiltViewModel(),
+    onNavigateBack: () -> Unit,
+    onFinishWorkout: () -> Unit
+) {
+    val uiState by viewModel.uiState.collectAsState()
+    
+    // Main workout execution screen
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ColorUtils.getBackgroundColor())
+    ) {
+        // Main content
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(bottom = 80.dp) // Space for bottom action bar
+        ) {
+            // Exercise details
+            if (uiState.currentExerciseDefinition != null) {
+                // Exercise name and image
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // Add a back button
+                    IconButton(onClick = onNavigateBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = ColorUtils.getTextColor()
+                        )
+                    }
+                    
+                    Text(
+                        text = uiState.currentExerciseDefinition?.name ?: "Exercise",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = ColorUtils.getTextColor(),
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(1f)
+                    )
+                    
+                    // Empty space for alignment
+                    Box(modifier = Modifier.size(48.dp))
+                }
+                
+                // Exercise info showing current exercise number / total
+                val workoutDay = uiState.workoutDay
+                if (workoutDay != null) {
+                    Text(
+                        text = "Exercise ${uiState.currentExerciseIndex + 1} of ${workoutDay.exercises.size}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = ColorUtils.getSecondaryTextColor(),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    )
+                }
+                
+                // Exercise card with image
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .padding(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = ColorUtils.getBackgroundColor()
+                    )
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(8.dp)
+                    ) {
+                        val exerciseDefinition = uiState.currentExerciseDefinition ?: return@Box
+                        
+                        com.H_Oussama.gymplanner.ui.common.ExerciseImage(
+                            exerciseName = exerciseDefinition.name,
+                            imageIdentifier = exerciseDefinition.imageIdentifier,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(16.dp),
+                            contentScale = ContentScale.Fit,
+                            onSearchClick = {
+                                AndroidLog.d("ExerciseAnatomyImage", "Search clicked for: ${exerciseDefinition.name}")
+                                imageDownloader.searchImage(exerciseDefinition, forceWebSearch = true)
+                            }
+                        )
+                    }
+                }
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Workout summary
+                WorkoutSummaryCardThemed(
+                    setsCompleted = uiState.totalSetsCompleted,
+                    totalWeight = uiState.totalWeightLifted,
+                    totalReps = uiState.totalReps,
+                    durationMinutes = uiState.workoutDurationSeconds / 60,
+                    caloriesBurned = uiState.totalCaloriesBurned,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
+                // Set tracking
+                SetTrackingTableThemed(
+                    currentSet = uiState.currentSet,
+                    targetSets = uiState.targetSets ?: 3,
+                    currentSetDuration = uiState.currentSetDurationSeconds,
+                    onStartSet = { viewModel.startSet() },
+                    onLogSet = { viewModel.logSetDialog() },
+                    previousSetData = uiState.previousSetData,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+        
+        // Bottom navigation/action bar
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(ColorUtils.getBackgroundColor())
+                .padding(16.dp)
+                .align(Alignment.BottomCenter)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Previous exercise button
+                TextButton(
+                    onClick = { viewModel.navigateToPreviousExercise() },
+                    enabled = uiState.currentExerciseIndex > 0,
+                    colors = ButtonDefaults.textButtonColors(contentColor = ColorUtils.getTextColor())
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Previous Exercise",
+                        tint = if (uiState.currentExerciseIndex > 0) ColorUtils.getTextColor() else ColorUtils.getTextColor().copy(alpha = 0.5f)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Previous", color = if (uiState.currentExerciseIndex > 0) ColorUtils.getTextColor() else ColorUtils.getTextColor().copy(alpha = 0.5f))
+                }
+                
+                // Next exercise/finish workout button
+                val isLastExercise = uiState.workoutDay?.exercises?.size?.let {
+                    uiState.currentExerciseIndex == it - 1
+                } ?: false
+                
+                TextButton(
+                    onClick = {
+                        if (isLastExercise) {
+                            onFinishWorkout()
+                        } else {
+                            viewModel.navigateToNextExercise()
+                        }
+                    },
+                    colors = ButtonDefaults.textButtonColors(contentColor = ColorUtils.getTextColor())
+                ) {
+                    Text(if (isLastExercise) "Finish Workout" else "Next", color = ColorUtils.getTextColor())
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Icon(
+                        imageVector = if (isLastExercise) Icons.Default.Check else Icons.Default.ArrowForward,
+                        contentDescription = if (isLastExercise) "Finish Workout" else "Next Exercise",
+                        tint = ColorUtils.getTextColor()
+                    )
+                }
+            }
+        }
+        
+        // Show rest timer if active
+        if (uiState.isRestTimerActive) {
+            RestTimerOverlayThemed(
+                remainingSeconds = uiState.restTimerSeconds,
+                totalSeconds = uiState.initialRestTimerSeconds,
+                onSkip = { viewModel.skipRestTimer() }
+            )
+        }
+        
+        // Confirmation dialog
+        if (uiState.showFinishConfirmationDialog) {
+            AlertDialog(
+                onDismissRequest = { viewModel.dismissFinishDialog() },
+                title = {
+                    Text("Finish Workout")
+                },
+                text = {
+                    Text("Are you sure you want to finish this workout?")
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            viewModel.dismissFinishDialog()
+                            viewModel.finishWorkout()
+                        }
+                    ) {
+                        Text("Yes, Finish", color = MaterialTheme.colorScheme.primary)
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { viewModel.dismissFinishDialog() }
+                    ) {
+                        Text("Cancel")
+                    }
+                },
+                containerColor = ColorUtils.getBackgroundColor(),
+                textContentColor = ColorUtils.getTextColor(),
+                titleContentColor = ColorUtils.getTextColor()
+            )
+        }
+    }
+}
+
+@Composable
+private fun ExerciseAnatomyImage(
+    exerciseDefinition: ExerciseDefinition?,
+    modifier: Modifier = Modifier
+) {
+    val imageDownloader = hiltViewModel<ExerciseImageDownloader>()
+    val downloadState by imageDownloader.downloadState.collectAsState()
+    var refreshTrigger by remember { mutableStateOf(0) }
+    val context = LocalContext.current
+    var imageLoadError by remember { mutableStateOf(false) }
+    var loadAttempted by remember { mutableStateOf(false) }
+    
+    // Listen for successful downloads and trigger a refresh
+    LaunchedEffect(downloadState) {
+        if (downloadState is ExerciseImageDownloader.DownloadState.Success) {
+            // Increment the refresh trigger to force recomposition
+            refreshTrigger++
+            imageLoadError = false
+            // Log when a successful download is detected to help with debugging
+            AndroidLog.d("ExerciseAnatomyImage", "Download success detected, refreshing image")
+        }
+    }
+    
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = ThemeUtils.getBackgroundColor().copy(alpha = 0.8f)
+        ),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            if (exerciseDefinition != null) {
+                // Key with refreshTrigger to force recomposition when updated
+                key(exerciseDefinition.id, refreshTrigger) {
+                    AndroidLog.d("ExerciseAnatomyImage", "Loading exercise GIF: ${exerciseDefinition.name}")
+                    
+                    com.H_Oussama.gymplanner.ui.common.ExerciseImage(
+                        exerciseName = exerciseDefinition.name,
+                        imageIdentifier = exerciseDefinition.imageIdentifier,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        contentScale = ContentScale.Fit,
+                        onSearchClick = {
+                            // Log search click event
+                            AndroidLog.d("ExerciseAnatomyImage", "Search clicked for: ${exerciseDefinition.name}")
+                            imageDownloader.searchImage(exerciseDefinition, forceWebSearch = true)
+                        }
+                    )
+                    
+                    loadAttempted = true
+                }
+                
+                // Show fallback text if loading the image takes too long
+                var showFallbackText by remember { mutableStateOf(false) }
+                
+                LaunchedEffect(exerciseDefinition.id, refreshTrigger) {
+                    showFallbackText = false
+                    delay(2000) // Wait a bit longer (2 seconds) to see if image loads
+                    if (loadAttempted) {
+                        showFallbackText = true
+                    }
+                }
+                
+                if (showFallbackText) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                            .alpha(0.8f),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = exerciseDefinition.name,
+                                style = MaterialTheme.typography.headlineSmall,
+                                color = ThemeUtils.getTextColor(),
+                                textAlign = TextAlign.Center
+                            )
+                            
+                            Spacer(modifier = Modifier.height(8.dp))
+                            
+                            Text(
+                                text = "Loading animation...",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = ThemeUtils.getSecondaryTextColor(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+            } else {
+                // Show placeholder if no exercise is selected
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+            }
+            
+            // Handle image download states
+            when (downloadState) {
+                is ExerciseImageDownloader.DownloadState.Searching -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(ThemeUtils.getBackgroundColor().copy(alpha = 0.7f))
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                "Searching for images...",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = ThemeUtils.getTextColor(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+                is ExerciseImageDownloader.DownloadState.Results -> {
+                    val result = downloadState as ExerciseImageDownloader.DownloadState.Results
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(ThemeUtils.getBackgroundColor().copy(alpha = 0.7f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            // Show the image preview
+                            androidx.compose.foundation.Image(
+                                bitmap = result.previewBitmap.asImageBitmap(),
+                                contentDescription = "Preview image",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .aspectRatio(1f)
+                                    .clip(RoundedCornerShape(8.dp)),
+                                contentScale = ContentScale.Crop
+                            )
+                            
+                            Spacer(modifier = Modifier.height(16.dp))
+                            
+                            // Buttons
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceEvenly
+                            ) {
+                                OutlinedButton(
+                                    onClick = { imageDownloader.resetState() },
+                                    border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                                    colors = ButtonDefaults.outlinedButtonColors(
+                                        contentColor = MaterialTheme.colorScheme.primary
+                                    )
+                                ) {
+                                    Text("Cancel")
+                                }
+                                
+                                Button(
+                                    onClick = { imageDownloader.downloadImage() },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary
+                                    )
+                                ) {
+                                    Text("Use This Image")
+                                }
+                            }
+                        }
+                    }
+                }
+                is ExerciseImageDownloader.DownloadState.Downloading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(ThemeUtils.getBackgroundColor().copy(alpha = 0.7f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+                            Spacer(modifier = Modifier.height(16.dp))
+                            Text(
+                                "Downloading image...",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = ThemeUtils.getTextColor(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+                is ExerciseImageDownloader.DownloadState.Success -> {
+                    // Success state - we'll refresh the image automatically
+                    LaunchedEffect(downloadState) {
+                        // Add a small delay then reset the state
+                        delay(1000)
+                        imageDownloader.resetState()
+                    }
+                }
+                is ExerciseImageDownloader.DownloadState.Error -> {
+                    val error = downloadState as ExerciseImageDownloader.DownloadState.Error
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(ThemeUtils.getBackgroundColor().copy(alpha = 0.7f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Error,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.size(48.dp)
+                            )
+                            
+                            Spacer(modifier = Modifier.height(16.dp))
+                            
+                            Text(
+                                text = error.message,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = ThemeUtils.getTextColor(),
+                                textAlign = TextAlign.Center
+                            )
+                            
+                            Spacer(modifier = Modifier.height(16.dp))
+                            
+                            Button(
+                                onClick = { imageDownloader.resetState() },
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.primary
+                                )
+                            ) {
+                                Text("Dismiss")
+                            }
+                        }
+                    }
+                }
+                else -> {
+                    // Idle state - do nothing
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WorkoutSummaryCardThemed(
+    setsCompleted: Int,
+    totalWeight: Double,
+    totalReps: Int,
+    durationMinutes: Int,
+    caloriesBurned: Double,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF293244)
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Workout Summary",
+                style = MaterialTheme.typography.titleMedium,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                SummaryItem(
+                    value = "$setsCompleted",
+                    label = "Sets",
+                    icon = Icons.Default.FitnessCenter
+                )
+                SummaryItem(
+                    value = "${totalWeight.toInt()}",
+                    label = "Weight (kg)",
+                    icon = Icons.Default.Balance
+                )
+                SummaryItem(
+                    value = "$totalReps",
+                    label = "Reps",
+                    icon = Icons.Default.RepeatOne
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                SummaryItem(
+                    value = "$durationMinutes",
+                    label = "Minutes",
+                    icon = Icons.Default.Timer
+                )
+                SummaryItem(
+                    value = "${caloriesBurned.toInt()}",
+                    label = "Calories",
+                    icon = Icons.Default.LocalFireDepartment
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SummaryItem(
+    value: String,
+    label: String,
+    icon: ImageVector,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = Color(0xFF3B82F6),
+            modifier = Modifier.size(24.dp)
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.headlineSmall,
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.Gray
+        )
+    }
+}
+
+@Composable
+private fun WorkoutCompleteScreen(
+    totalSets: Int,
+    totalWeight: Double,
+    totalReps: Int,
+    durationMinutes: Int,
+    caloriesBurned: Double,
+    onFinish: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+                .fillMaxSize()
+            .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        // Celebration animation or icon
+        Icon(
+            imageVector = Icons.Default.EmojiEvents,
+            contentDescription = null,
+            tint = Color(0xFFFFD700), // Gold color
+            modifier = Modifier.size(128.dp)
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(
+            text = "Workout Complete!",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+        
+        Spacer(modifier = Modifier.height(8.dp))
+        
+        Text(
+            text = "Great job on completing your workout",
+            style = MaterialTheme.typography.bodyLarge,
+            color = Color.Gray,
+            textAlign = TextAlign.Center
+        )
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        // Summary stats
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            WorkoutStatItem(
+                value = "$totalSets",
+                label = "Sets",
+                icon = Icons.Default.FitnessCenter
+            )
+            WorkoutStatItem(
+                value = "${totalReps}",
+                label = "Reps",
+                icon = Icons.Default.RepeatOne
+            )
+            WorkoutStatItem(
+                value = "${totalWeight.toInt()}kg",
+                label = "Weight",
+                icon = Icons.Default.Balance
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            WorkoutStatItem(
+                value = "$durationMinutes",
+                label = "Minutes",
+                icon = Icons.Default.Timer
+            )
+            WorkoutStatItem(
+                value = "${caloriesBurned.toInt()}",
+                label = "Calories",
+                icon = Icons.Default.LocalFireDepartment
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        // Action buttons
+        Button(
+            onClick = onFinish,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF3B82F6)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(54.dp),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text(
+                text = "Save Workout",
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.Bold
+            )
+        }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        TextButton(
+            onClick = onFinish,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = "Return to Home",
+                color = ThemeUtils.getSecondaryTextColor()
+            ) 
+        }
+    }
+}
+
+@Composable
+private fun WorkoutStatItem(
+    value: String,
+    label: String,
+    icon: ImageVector,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(24.dp)
+        )
+        Text(
+            text = value,
+            style = MaterialTheme.typography.headlineSmall,
+            color = ThemeUtils.getTextColor(),
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = ThemeUtils.getSecondaryTextColor()
+        )
+    }
+}
+
+@Composable
+fun SetTrackingTableThemed(
+    currentSet: Int,
+    targetSets: Int,
+    currentSetDuration: Int = 0,
+    onStartSet: () -> Unit,
+    onLogSet: () -> Unit,
+    previousSetData: Map<Int, Pair<Int, Double>> = emptyMap(),
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth()
+    ) {
+        // Header row
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(ThemeUtils.getBackgroundColor().copy(alpha = 0.8f))
+                .padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Set",
+                style = MaterialTheme.typography.bodyMedium,
+                color = ThemeUtils.getSecondaryTextColor(),
+                modifier = Modifier.weight(0.2f),
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "Previous",
+                style = MaterialTheme.typography.bodyMedium,
+                color = ThemeUtils.getSecondaryTextColor(),
+                modifier = Modifier.weight(0.4f),
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = "Target",
+                style = MaterialTheme.typography.bodyMedium,
+                color = ThemeUtils.getSecondaryTextColor(),
+                modifier = Modifier.weight(0.4f),
+                textAlign = TextAlign.Center
+            )
+        }
+        
+        // Set rows
+        for (setNumber in 1..targetSets) {
+            val isCurrentSet = setNumber == currentSet
+            val isPreviousSet = setNumber < currentSet
+            val isCompletedSet = previousSetData.containsKey(setNumber)
+            
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(if (isCurrentSet) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else Color.Transparent)
+                    .padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Set number
+                Text(
+                    text = "$setNumber",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = if (isCurrentSet) MaterialTheme.colorScheme.primary else ThemeUtils.getTextColor(),
+                    fontWeight = if (isCurrentSet) FontWeight.Bold else FontWeight.Normal,
+                    modifier = Modifier.weight(0.2f),
+                    textAlign = TextAlign.Center
+                )
+                
+                // Previous reps and weight
+                Text(
+                    text = if (previousSetData.containsKey(setNumber)) {
+                        val (reps, weight) = previousSetData[setNumber]!!
+                        "$reps reps × ${weight.toInt()} kg"
+                    } else if (setNumber < currentSet && previousSetData.containsKey(setNumber - 1)) {
+                        val (reps, weight) = previousSetData[setNumber - 1]!!
+                        "$reps reps × ${weight.toInt()} kg"
+                    } else {
+                        "-"
+                    },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = ThemeUtils.getSecondaryTextColor(),
+                    modifier = Modifier.weight(0.4f),
+                    textAlign = TextAlign.Center
+                )
+                
+                // Target column / action button
+                if (isCurrentSet) {
+                    if (currentSetDuration > 0) {
+                        // Show log button when set is in progress
+                        OutlinedButton(
+                            onClick = onLogSet,
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.primary
+                            ),
+                            modifier = Modifier
+                                    .weight(0.4f)
+                                    .height(36.dp)
+                        ) {
+                            Text(
+                                text = "Log set",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    } else {
+                        // Show start button when set hasn't started
+                        Button(
+                            onClick = onStartSet,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            ),
+                            modifier = Modifier
+                                    .weight(0.4f)
+                                    .height(36.dp)
+                        ) {
+                            Text(
+                                text = "Start set",
+                                style = MaterialTheme.typography.bodySmall
+                            )
+                        }
+                    }
+                } else {
+                    // Show checkmark for completed sets
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.weight(0.4f)
+                    ) {
+                        if (isCompletedSet) {
+                            Icon(
+                                imageVector = Icons.Default.CheckCircle,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.tertiary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        } else {
+                            Text(
+                                text = "-",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = ThemeUtils.getSecondaryTextColor(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RestTimerOverlayThemed(
+    remainingSeconds: Int,
+    totalSeconds: Int,
+    onSkip: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ColorUtils.getBackgroundColor().copy(alpha = 0.9f)),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Rest",
+                style = MaterialTheme.typography.headlineLarge,
+                color = ColorUtils.getTextColor(),
+                fontWeight = FontWeight.Bold
+            )
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(
+                text = "$remainingSeconds",
+                style = TextStyle(
+                    fontSize = 64.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = ColorUtils.getTextColor()
+                )
+            )
+            
+            Spacer(modifier = Modifier.height(32.dp))
+            
+            Button(
+                onClick = onSkip,
+                shape = RoundedCornerShape(24.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier
+                    .width(130.dp)
+                    .height(48.dp)
+            ) {
+                Text("Skip Rest")
+            }
+        }
+    }
+}
