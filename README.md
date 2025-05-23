@@ -139,14 +139,48 @@ If you want to build the app from source:
 ### Clone and Build
 ```bash
 # Clone the repository
-git clone https://github.com/username/GYM_planner.git
+git clone https://github.com/ossama21/GYM_planner.git
 
 # Navigate to the project directory
 cd GYM_planner
-
-# Build the debug version
-./gradlew assembleDebug
 ```
+
+### Building APK in Android Studio
+
+#### Opening the Project
+1. Launch Android Studio
+2. Select "Open an Existing Project"
+3. Navigate to the cloned GYM_planner directory and select it
+4. Wait for the project to sync and index
+
+#### Building Debug APK
+1. Go to **Build** menu → **Build Bundle(s) / APK(s)** → **Build APK(s)**
+2. Wait for the build process to complete
+3. Click on the "locate" link in the notification that appears
+4. The debug APK will be in: `app/build/outputs/apk/debug/app-debug.apk`
+
+#### Building Release APK
+1. Go to **Build** menu → **Generate Signed Bundle / APK**
+2. Select **APK** option and click **Next**
+3. Configure the signing key:
+   - If you have an existing keystore, select it and enter your credentials
+   - If not, click "Create new" to create a new keystore file (keep this safe!)
+4. Click **Next**
+5. Select release build variant and click **Finish**
+6. The release APK will be in: `app/build/outputs/apk/release/app-release.apk`
+
+#### Using Command Line (Alternative)
+```bash
+# For debug APK
+./gradlew assembleDebug
+
+# For release APK (requires signing configuration in build.gradle)
+./gradlew assembleRelease
+```
+
+The generated APKs will be located in:
+- Debug: `app/build/outputs/apk/debug/app-debug.apk`
+- Release: `app/build/outputs/apk/release/app-release.apk`
 
 ### Run the App
 - Connect an Android device or start an emulator
