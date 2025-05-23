@@ -4,10 +4,11 @@ This file provides guidance on how to take and organize screenshots for your GYM
 
 ## Required Screenshots
 
-For each screenshot, aim for a 16:9 aspect ratio and a minimum resolution of 1080x1920 pixels. Use a device with a clean interface, preferably with a dark or light theme based on what best showcases your app's UI.
+For each screenshot, aim for a 16:9 aspect ratio and a resolution of 1080x1920 pixels. The screenshots will be displayed at a reduced size in the README (300px width), but high-resolution images will ensure clarity.
 
 ### App Banner (app_banner.png)
-- Create a wide banner image (1200x600 pixels) showing the app name and logo
+- Create a banner image (1200x300 pixels) showing the app name and logo
+- Will be displayed at 600px width in the README
 - Can be designed in any image editing software like Photoshop, Figma, or Canva
 - Include the app logo and name with a fitness-themed background
 

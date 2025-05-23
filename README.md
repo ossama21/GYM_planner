@@ -2,7 +2,7 @@
 
 A comprehensive fitness companion app that helps you plan workouts, track progress, monitor nutrition, and achieve your fitness goals.
 
-![App Banner](screenshots/app_banner.png)
+<img src="screenshots/app_banner.png" width="600" alt="App Banner">
 
 ## Features
 
@@ -40,39 +40,67 @@ A comprehensive fitness companion app that helps you plan workouts, track progre
 ## Screenshots
 
 ### Home Screen & Navigation
-![Home Screen](screenshots/home_screen.png) | ![Navigation Drawer](screenshots/navigation_drawer.png)
-:-------------------------:|:-------------------------:
-Main dashboard | App navigation menu
+<div align="center">
+  <img src="screenshots/home_screen.png" width="300" alt="Home Screen">
+  <img src="screenshots/navigation_drawer.png" width="300" alt="Navigation Drawer">
+</div>
+<div align="center">
+  <i>Main dashboard</i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>App navigation menu</i>
+</div>
 
 ### Workout Planning
-![Workout List](screenshots/workout_list.png) | ![Workout Editor](screenshots/workout_editor.png)
-:-------------------------:|:-------------------------:
-Workout plan overview | Creating and editing workouts
+<div align="center">
+  <img src="screenshots/workout_list.png" width="300" alt="Workout List">
+  <img src="screenshots/workout_editor.png" width="300" alt="Workout Editor">
+</div>
+<div align="center">
+  <i>Workout plan overview</i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Creating and editing workouts</i>
+</div>
 
 ### Exercise Library
-![Exercise List](screenshots/exercise_list.png) | ![Exercise Details](screenshots/exercise_details.png)
-:-------------------------:|:-------------------------:
-Browse available exercises | Exercise detail with animation
+<div align="center">
+  <img src="screenshots/exercise_list.png" width="300" alt="Exercise List">
+  <img src="screenshots/exercise_details.png" width="300" alt="Exercise Details">
+</div>
+<div align="center">
+  <i>Browse available exercises</i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Exercise detail with animation</i>
+</div>
 
 ### Workout Execution
-![Workout Start](screenshots/workout_start.png) | ![Exercise Execution](screenshots/exercise_execution.png)
-:-------------------------:|:-------------------------:
-Starting a workout | Performing exercises with guidance
+<div align="center">
+  <img src="screenshots/workout_start.png" width="300" alt="Workout Start">
+  <img src="screenshots/exercise_execution.png" width="300" alt="Exercise Execution">
+</div>
+<div align="center">
+  <i>Starting a workout</i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Performing exercises with guidance</i>
+</div>
 
 ### Progress Tracking
-![Weight Chart](screenshots/weight_chart.png) | ![Workout History](screenshots/workout_history.png)
-:-------------------------:|:-------------------------:
-Weight progress visualization | Workout history and achievements
+<div align="center">
+  <img src="screenshots/weight_chart.png" width="300" alt="Weight Chart">
+  <img src="screenshots/workout_history.png" width="300" alt="Workout History">
+</div>
+<div align="center">
+  <i>Weight progress visualization</i> &nbsp;&nbsp; <i>Workout history and achievements</i>
+</div>
 
 ### Nutrition Tracking
-![Nutrition Dashboard](screenshots/nutrition_dashboard.png) | ![Food Entry](screenshots/food_entry.png)
-:-------------------------:|:-------------------------:
-Nutrition overview | Adding food entries
+<div align="center">
+  <img src="screenshots/nutrition_dashboard.png" width="300" alt="Nutrition Dashboard">
+  <img src="screenshots/food_entry.png" width="300" alt="Food Entry">
+</div>
+<div align="center">
+  <i>Nutrition overview</i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Adding food entries</i>
+</div>
 
 ### Settings & Personalization
-![Settings](screenshots/settings.png) | ![Theme Options](screenshots/theme_options.png)
-:-------------------------:|:-------------------------:
-App settings | Theme customization
+<div align="center">
+  <img src="screenshots/settings.png" width="300" alt="Settings">
+  <img src="screenshots/theme_options.png" width="300" alt="Theme Options">
+</div>
+<div align="center">
+  <i>App settings</i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i>Theme customization</i>
+</div>
 
 ## Installation
 
