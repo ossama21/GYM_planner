@@ -1,8 +1,13 @@
 # GYM Planner - Workout & Fitness Tracker
 
+
 A comprehensive fitness companion app that helps you plan workouts, track progress, monitor nutrition, and achieve your fitness goals.
 
 <img src="screenshots/app_banner.png" width="400" alt="App Banner">
+
+> **⚠️ IMPORTANT: This app is currently under active development.**  
+> No stable version is published yet and no APK is currently available for download.  
+> This documentation is for development and preview purposes only.
 
 ## Features
 
