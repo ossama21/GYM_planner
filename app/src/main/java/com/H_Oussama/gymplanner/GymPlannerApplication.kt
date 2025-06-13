@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build.VERSION.SDK_INT
 import android.util.Log
-import androidx.lifecycle.lifecycleScope
+import androidx.hilt.work.HiltWorkerFactory
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
@@ -19,14 +19,30 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 import com.H_Oussama.gymplanner.data.repositories.UserPreferencesRepository
+import com.H_Oussama.gymplanner.data.repositories.NutritionRepository
+import androidx.work.Configuration as WorkManagerConfiguration
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.ExistingPeriodicWorkPolicy
+import java.util.concurrent.TimeUnit
+import androidx.work.WorkerFactory
 
 // Keep the class, but remove repository instances for now.
 // We'll add Hilt annotations here soon.
 @HiltAndroidApp
-class GymPlannerApplication : Application(), coil.ImageLoaderFactory {
+class GymPlannerApplication : Application(), coil.ImageLoaderFactory, WorkManagerConfiguration.Provider {
 
     @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+    
+    @Inject
+    lateinit var customWorkerFactory: WorkerFactory
+    
+    @Inject
     lateinit var userPreferencesRepository: UserPreferencesRepository
+    
+    @Inject
+    lateinit var nutritionRepository: NutritionRepository
 
     // Application scope for coroutines
     private val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -36,19 +52,60 @@ class GymPlannerApplication : Application(), coil.ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
-        // Hilt setup happens automatically
+        
+        // Schedule the update worker after WorkManager is initialized
+        // (WorkManager is initialized automatically using the Provider implementation)
+        scheduleWeeklyUpdateCheck()
         
         // Initialize the language based on saved preference
         initializeLanguage()
+        
+        // Initialize the Gemini API if key is available
+        initializeGeminiApi()
         
         // Initialize the image matcher
         imageMatcher = EnhancedImageMatcher(this)
         
         // Preload image caches in the background first
         preloadImageCaches()
-        
-        // Initialize fallback images only if needed (after image caches are loaded)
-        // initializeFallbackImages()  // Removing this direct call
+    }
+    
+    // This is the property that the WorkManager expects from Configuration.Provider interface
+    override val workManagerConfiguration: WorkManagerConfiguration
+        get() = WorkManagerConfiguration.Builder()
+            .setWorkerFactory(customWorkerFactory)
+            .build()
+    
+    private fun scheduleWeeklyUpdateCheck() {
+        val updateWorkRequest = PeriodicWorkRequestBuilder<com.H_Oussama.gymplanner.workers.UpdateWorker>(7, TimeUnit.DAYS)
+            .build()
+
+        // Use KEEP to ensure we don't schedule multiple workers and don't run immediately
+        WorkManager.getInstance(this)
+            .enqueueUniquePeriodicWork(
+                "weekly_update_check",
+                ExistingPeriodicWorkPolicy.KEEP, 
+                updateWorkRequest
+            )
+    }
+    
+    /**
+     * Initialize the Gemini API with the saved key
+     */
+    private fun initializeGeminiApi() {
+        applicationScope.launch {
+            try {
+                val apiKey = userPreferencesRepository.getGeminiApiKey()
+                if (apiKey.isNotBlank()) {
+                    Log.d("GymPlannerApp", "Initializing Gemini API on app startup (key length: ${apiKey.length})")
+                    nutritionRepository.initializeGeminiModel(apiKey)
+                } else {
+                    Log.d("GymPlannerApp", "No Gemini API key found, skipping initialization")
+                }
+            } catch (e: Exception) {
+                Log.e("GymPlannerApp", "Error initializing Gemini API: ${e.message}")
+            }
+        }
     }
     
     /**
@@ -196,6 +253,20 @@ class GymPlannerApplication : Application(), coil.ImageLoaderFactory {
     }
 
     companion object {
+        const val UPDATE_WORKER_NAME = "weekly_update_check"
+        
+        /**
+         * Trigger a one-time update check on demand
+         */
+        fun triggerManualUpdateCheck(context: Context, isDevMode: Boolean = false) {
+            // Create a one-time work request that identifies itself as a manual check
+            val updateWorkRequest = androidx.work.OneTimeWorkRequestBuilder<com.H_Oussama.gymplanner.workers.UpdateWorker>()
+                .addTag("manual_update_check")
+                .build()
+                
+            WorkManager.getInstance(context).enqueue(updateWorkRequest)
+        }
+        
         fun setLocale(context: Context, languageCode: String) {
             val locale = when (languageCode) {
                 "fr" -> Locale("fr")

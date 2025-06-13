@@ -2,30 +2,39 @@ package com.H_Oussama.gymplanner.data.repositories
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import javax.inject.Inject
 
 /**
- * Repository for managing app configuration settings including API keys and goal values
+ * Repository for managing app configuration settings including nutrition goals
+ * Note: Gemini API key handling has been centralized in UserPreferencesRepository
  */
 class ConfigRepository @Inject constructor(
-    applicationContext: Context
+    applicationContext: Context,
+    private val userPreferencesRepository: UserPreferencesRepository
 ) {
     private val sharedPreferences: SharedPreferences = applicationContext.getSharedPreferences(
         PREFERENCES_NAME, Context.MODE_PRIVATE
     )
 
     /**
-     * Retrieves the Gemini API key
+     * Retrieves the Gemini API key from UserPreferencesRepository
+     * This is a bridge method to maintain compatibility with existing code
      */
     fun getGeminiApiKey(): String {
-        return sharedPreferences.getString(KEY_GEMINI_API, DEFAULT_GEMINI_API_KEY) ?: DEFAULT_GEMINI_API_KEY
+        val apiKey = userPreferencesRepository.getGeminiApiKey()
+        Log.d("ConfigRepository", "Getting Gemini API key from UserPreferencesRepository (length: ${apiKey.length})")
+        return apiKey
     }
 
     /**
-     * Saves the Gemini API key
+     * Saves the Gemini API key to UserPreferencesRepository
+     * This is a bridge method to maintain compatibility with existing code
      */
     fun setGeminiApiKey(apiKey: String) {
-        sharedPreferences.edit().putString(KEY_GEMINI_API, apiKey).apply()
+        Log.d("ConfigRepository", "Setting Gemini API key in UserPreferencesRepository (length: ${apiKey.length})")
+        // Launch a coroutine in ApplicationScope to set the API key
+        userPreferencesRepository.setGeminiApiKey(apiKey)
     }
 
     /**
@@ -100,10 +109,6 @@ class ConfigRepository @Inject constructor(
 
     companion object {
         private const val PREFERENCES_NAME = "gym_planner_config"
-        
-        // API Keys
-        private const val KEY_GEMINI_API = "gemini_api_key"
-        private const val DEFAULT_GEMINI_API_KEY = "AIzaSyA9yJluWu9Xzwpz0qPdR5Y4zSiwSgo3-Aw"
         
         // Nutrition Goals
         private const val KEY_CALORIE_GOAL = "calorie_goal"

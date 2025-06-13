@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="Gym_Genius.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-05-14T22:43:36.967916Z">
+        <DropdownSelection timestamp="2025-06-13T11:49:59.259524200Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=9f401bc4" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=R5CWC1K1HGD" />
             </handle>
           </Target>
         </DropdownSelection>

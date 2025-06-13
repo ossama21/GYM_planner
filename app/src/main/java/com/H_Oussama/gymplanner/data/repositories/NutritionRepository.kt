@@ -46,11 +46,41 @@ class NutritionRepository @Inject constructor(
     
     fun initializeGeminiModel(apiKey: String) {
         if (apiKey.isNotEmpty()) {
-            this.apiKey = apiKey // Cache the API key
-            generativeModel = GenerativeModel(
-                modelName = "gemini-2.0-flash", // Updated model name
-                apiKey = apiKey
-            )
+            println("DEBUG: Initializing Gemini model with API key (length: ${apiKey.length})")
+            try {
+                this.apiKey = apiKey // Cache the API key
+                generativeModel = GenerativeModel(
+                    modelName = "gemini-2.0-flash", // Updated to use gemini-2.0-flash
+                    apiKey = apiKey
+                )
+                println("DEBUG: Successfully initialized Gemini model: ${generativeModel?.modelName}")
+            } catch (e: Exception) {
+                println("ERROR: Failed to initialize Gemini model: ${e.message}")
+                e.printStackTrace()
+                
+                // Try fallback models if primary fails
+                tryFallbackModels(apiKey)
+            }
+        } else {
+            println("ERROR: Cannot initialize Gemini model - API key is empty")
+        }
+    }
+    
+    private fun tryFallbackModels(apiKey: String) {
+        val fallbackModels = listOf("gemini-1.5-flash-latest", "gemini-1.5-pro", "gemini-pro")
+        
+        for (modelName in fallbackModels) {
+            try {
+                println("DEBUG: Trying fallback model: $modelName")
+                generativeModel = GenerativeModel(
+                    modelName = modelName,
+                    apiKey = apiKey
+                )
+                println("DEBUG: Successfully initialized fallback Gemini model: $modelName")
+                return // Success with this model
+            } catch (e: Exception) {
+                println("ERROR: Failed to initialize fallback Gemini model $modelName: ${e.message}")
+            }
         }
     }
 
@@ -285,20 +315,8 @@ class NutritionRepository @Inject constructor(
                 println("DEBUG: First attempt failed: ${e.message}")
                 // Try with different model versions if we have an API key
                 if (apiKey.isNotEmpty()) {
-                    // List of model names to try
-                    val modelNames = if (model.modelName == "gemini-2.0-flash") {
-                        // If we already tried gemini-2.0-flash, try these alternatives
-                        listOf("gemini-1.5-pro", "gemini-pro")
-                    } else if (model.modelName == "gemini-1.5-pro") {
-                        // If we already tried gemini-1.5-pro, try these alternatives
-                        listOf("gemini-2.0-flash", "gemini-pro")
-                    } else if (model.modelName == "gemini-pro") {
-                        // If we already tried gemini-pro, try these alternatives
-                        listOf("gemini-2.0-flash", "gemini-1.5-pro")
-                    } else {
-                        // For any other model, try these in order
-                        listOf("gemini-2.0-flash", "gemini-1.5-pro", "gemini-pro")
-                    }
+                    // List of model names to try, in order of preference
+                    val modelNames = listOf("gemini-2.0-flash", "gemini-1.5-pro-latest", "gemini-pro")
                     
                     // Try each model name
                     for (modelName in modelNames) {

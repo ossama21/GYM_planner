@@ -5,7 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
 import com.H_Oussama.gymplanner.data.model.WorkoutPlan
-import com.H_Oussama.gymplanner.data.repositories.ConfigRepository
+import com.H_Oussama.gymplanner.data.repositories.UserPreferencesRepository
 import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.GenerateContentResponse
 import com.google.ai.client.generativeai.type.content
@@ -26,7 +26,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class ExerciseNameNormalizer @Inject constructor(
-    private val configRepository: ConfigRepository,
+    private val userPreferencesRepository: UserPreferencesRepository,
     private val context: Context
 ) {
     private val TAG = "ExerciseNameNormalizer"
@@ -137,7 +137,9 @@ class ExerciseNameNormalizer @Inject constructor(
         updateProgress(0.05f)
         
         // Check for API key
-        val apiKey = configRepository.getGeminiApiKey()
+        val apiKey = userPreferencesRepository.getGeminiApiKey()
+        Log.d(TAG, "Using Gemini API key from UserPreferencesRepository (length: ${apiKey.length})")
+        
         if (apiKey.isBlank()) {
             return NormalizationResult.Error(
                 ErrorType.NO_API_KEY,

@@ -121,17 +121,20 @@ object AppModule {
     
     @Provides
     @Singleton
-    fun provideConfigRepository(@ApplicationContext context: Context): ConfigRepository {
-        return ConfigRepository(context)
+    fun provideConfigRepository(
+        @ApplicationContext context: Context,
+        userPreferencesRepository: UserPreferencesRepository
+    ): ConfigRepository {
+        return ConfigRepository(context, userPreferencesRepository)
     }
     
     @Provides
     @Singleton
     fun provideExerciseNameNormalizer(
-        configRepository: ConfigRepository,
+        userPreferencesRepository: UserPreferencesRepository,
         @ApplicationContext context: Context
     ): ExerciseNameNormalizer {
-        return ExerciseNameNormalizer(configRepository, context)
+        return ExerciseNameNormalizer(userPreferencesRepository, context)
     }
 
     @Provides

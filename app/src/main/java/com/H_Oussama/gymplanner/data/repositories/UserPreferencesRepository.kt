@@ -14,6 +14,9 @@ import javax.inject.Singleton
 import java.util.Date
 import java.time.LocalDate
 import java.time.ZoneId
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import com.H_Oussama.gymplanner.workers.UpdateWorker
 
 @Singleton
 class UserPreferencesRepository @Inject constructor(
@@ -55,9 +58,17 @@ class UserPreferencesRepository @Inject constructor(
         // App Intro Keys
         private const val KEY_INTRO_VIDEO_MUTED = "intro_video_muted"
         private const val KEY_SKIP_INTRO = "skip_intro"
+        private const val KEY_FIRST_RUN = "first_run"
         
         // Language Keys
         private const val KEY_LANGUAGE = "language"
+        
+        // Update check keys
+        private const val KEY_LAST_UPDATE_CHECK = "last_update_check"
+        private const val KEY_SKIPPED_UPDATE_COUNT = "skipped_update_count"
+        
+        // Developer mode key
+        private const val KEY_DEVELOPER_MODE = "developer_mode"
         
         // Activity level multipliers
         const val ACTIVITY_LEVEL_SEDENTARY = "sedentary"
@@ -79,11 +90,49 @@ class UserPreferencesRepository @Inject constructor(
         // Keys for activity level and gender
         private const val KEY_ACTIVITY_LEVEL = "activity_level"
         private const val KEY_GENDER = "gender"
+        
+        // Gemini API key
+        const val KEY_GEMINI_API_KEY = "gemini_api_key"
     }
     
     // Shared preferences instance
     private val sharedPrefs: SharedPreferences by lazy {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
+    
+    /**
+     * Check if this is the first run of the app
+     * This is used to determine if we should check for updates on startup
+     */
+    fun isFirstRun(): Boolean {
+        return !sharedPrefs.contains(KEY_FIRST_RUN)
+    }
+    
+    /**
+     * Set the first run flag
+     */
+    fun setFirstRun(isFirstRun: Boolean) {
+        sharedPrefs.edit {
+            putBoolean(KEY_FIRST_RUN, !isFirstRun)
+        }
+    }
+    
+    // Developer mode methods
+    
+    /**
+     * Set developer mode status
+     */
+    fun setDeveloperMode(enabled: Boolean) {
+        sharedPrefs.edit {
+            putBoolean(KEY_DEVELOPER_MODE, enabled)
+        }
+    }
+    
+    /**
+     * Check if developer mode is enabled
+     */
+    fun isDeveloperModeEnabled(): Boolean {
+        return sharedPrefs.getBoolean(KEY_DEVELOPER_MODE, false)
     }
     
     // Profile Methods
@@ -359,14 +408,15 @@ class UserPreferencesRepository @Inject constructor(
     private val KEY_WATER_INTAKE_GOAL = "water_intake_goal"
     private val KEY_WATER_INTAKE_PREFIX = "water_intake_"
     
-    suspend fun setGeminiApiKey(key: String) = withContext(Dispatchers.IO) {
-        sharedPrefs.edit(commit = true) {
-            putString(KEY_GEMINI_API_KEY, key)
-        }
-    }
-    
     fun getGeminiApiKey(): String {
         return sharedPrefs.getString(KEY_GEMINI_API_KEY, "") ?: ""
+    }
+    
+    // Add a non-suspend function for setting API key when used from places like ConfigRepository
+    fun setGeminiApiKey(key: String) {
+        sharedPrefs.edit {
+            putString(KEY_GEMINI_API_KEY, key)
+        }
     }
     
     suspend fun setCalorieGoal(goal: Int) = withContext(Dispatchers.IO) {
@@ -556,5 +606,33 @@ class UserPreferencesRepository @Inject constructor(
     
     fun getLanguage(): String {
         return sharedPrefs.getString(KEY_LANGUAGE, "en") ?: "en"
+    }
+
+    // Update Check Methods
+    fun getLastUpdateCheckTimestamp(): Long {
+        return sharedPrefs.getLong(KEY_LAST_UPDATE_CHECK, 0L)
+    }
+
+    fun setLastUpdateCheckTimestamp(timestamp: Long) {
+        sharedPrefs.edit {
+            putLong(KEY_LAST_UPDATE_CHECK, timestamp)
+        }
+    }
+
+    fun getSkippedUpdateCount(): Int {
+        return sharedPrefs.getInt(KEY_SKIPPED_UPDATE_COUNT, 0)
+    }
+
+    fun incrementSkippedUpdateCount() {
+        val currentCount = getSkippedUpdateCount()
+        sharedPrefs.edit {
+            putInt(KEY_SKIPPED_UPDATE_COUNT, currentCount + 1)
+        }
+    }
+
+    fun resetSkippedUpdateCount() {
+        sharedPrefs.edit {
+            putInt(KEY_SKIPPED_UPDATE_COUNT, 0)
+        }
     }
 } 

@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <!-- Required for haptic feedback -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:name=".GymPlannerApplication"
@@ -26,6 +27,18 @@
         android:theme="@style/Theme.GymGenius" 
         android:enableOnBackInvokedCallback="true"
         tools:targetApi="31">
+        
+        <!-- Disable the default WorkManager initializer -->
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="merge">
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
+        </provider>
+        
         <activity
             android:name=".SplashActivity"
             android:exported="true"

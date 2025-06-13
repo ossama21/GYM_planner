@@ -18,10 +18,10 @@ android {
     
     defaultConfig {
         applicationId = "com.H_Oussama.gymplanner"
-        minSdk = 24
-        targetSdk = 35 // Updated based on previous error
-        versionCode = 1
-        versionName = "2.0"
+        minSdk = 26
+        targetSdk = 34
+        versionCode = 5
+        versionName = "4.5-Close-Beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -143,6 +143,16 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0") // Update to stable version
 
+    // WorkManager for background tasks
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation("androidx.hilt:hilt-work:1.1.0") // Hilt integration for WorkManager
+
+    // OkHttp for networking
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // Accompanist for system UI controller (already present)
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
+    
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

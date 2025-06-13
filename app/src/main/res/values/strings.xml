@@ -76,7 +76,7 @@
     <string name="api_key">API Key</string>
     <string name="test_save">Test &amp; Save</string>
     <string name="logout">Logout</string>
-    <string name="version">Version 4.0</string>
+    <string name="version">Version 4.5 Open-Beta</string>
     
     <!-- Additional Settings Screens -->
     <string name="account_settings">Account Settings</string>
@@ -105,7 +105,7 @@
     <!-- About Dialog -->
     <string name="about_title">About GYM Planner</string>
     <string name="about_description">GYM Planner is a comprehensive workout planning and tracking app designed to help you achieve your fitness goals.</string>
-    <string name="version_text">Version: 4.0</string>
+    <string name="version_text">Version: 4.5 Open-Beta</string>
     <string name="developer">Developed by: H_Oussama</string>
     <string name="developer_email">Email: ossamahattan@gmail.com</string>
     <string name="developer_github">GitHub: github.com/ossama21</string>
@@ -185,6 +185,8 @@
     <string name="changelog_v4_0">Version 4.0:\n• Fixed white theme support in progress screens\n• Fixed white theme support in calculator main screen\n• Fixed white theme support in workout and exercise screens\n• Added version history section\n• Updated developer contact information</string>
     <string name="changelog_v3_5">Version 3.5:\n• Fixed exercise GIF matching system\n• Added performance optimizations\n• Reduced app size\n• Improved UI responsiveness</string>
     <string name="changelog_v3_0">Version 3.0:\n• Added nutrition tracking feature\n• Integrated AI-powered food recognition\n• Enhanced progress tracking capabilities\n• Added more exercise animations</string>
+    <string name="changelog_v4_5">"Version 4.5 (Open-Beta):\n- Fixed Gemini API key validation and model compatibility.\n- Added automatic update checking from GitHub.\n- Implemented in-app update notifications and dialogs.\n- Centralized API key management to resolve conflicts."</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources> 
  
  

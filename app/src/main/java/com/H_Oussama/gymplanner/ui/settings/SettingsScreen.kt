@@ -90,13 +90,6 @@ fun SettingsScreen(
                     title = stringResource(id = R.string.notifications),
                     icon = Icons.Default.Notifications,
                     onClick = onNavigateToNotifications
-                ),
-                SettingsItemData(
-                    icon = Icons.Default.Search,
-                    title = stringResource(id = R.string.image_search_demo),
-                    onClick = { 
-                        navController.navigate(Routes.IMAGE_SEARCH_DEMO)
-                    }
                 )
             )
         )
@@ -136,11 +129,6 @@ fun SettingsScreen(
                     title = stringResource(id = R.string.workout_goals),
                     icon = Icons.Default.FitnessCenter,
                     onClick = onNavigateToWorkoutGoals
-                ),
-                SettingsItemData(
-                    title = stringResource(id = R.string.manage_exercise_images),
-                    icon = Icons.Default.PhotoLibrary,
-                    onClick = onNavigateToManageImages
                 )
             )
         )
@@ -148,11 +136,6 @@ fun SettingsScreen(
         SettingsSection(
             title = stringResource(id = R.string.app),
             items = listOf(
-                SettingsItemData(
-                    title = stringResource(id = R.string.help_support),
-                    icon = Icons.Default.HelpOutline,
-                    onClick = { showHelpDialog = true }
-                ),
                 SettingsItemData(
                     title = stringResource(id = R.string.changelog),
                     icon = Icons.Default.History,
@@ -175,30 +158,43 @@ fun SettingsScreen(
             )
         )
         
-        // Gemini API Settings
-        SettingsSection(
-            title = stringResource(id = R.string.ai_features),
-            items = listOf(
-                SettingsItemData(
-                    title = stringResource(id = R.string.gemini_api_settings),
-                    subtitle = if (uiState.geminiApiKey.isNotEmpty()) 
-                        stringResource(id = R.string.api_key_configured) 
-                    else 
-                        stringResource(id = R.string.configure_api_key),
-                    icon = Icons.Default.Api,
-                    onClick = { showGeminiApiDialog = true },
-                    hasEndContent = uiState.geminiApiKey.isNotEmpty(),
-                    endContentType = 1
-                )
-            ),
-            geminiApiTestResult = when (uiState.geminiApiTestResult) {
-                GeminiApiTestResult.SUCCESS -> 1
-                GeminiApiTestResult.FAILED -> 2
-                GeminiApiTestResult.ERROR -> 3
-                GeminiApiTestResult.TESTING -> 4
-                else -> 0
-            }
-        )
+        // Developer Mode Section - only shown when enabled
+        if (uiState.developerMode) {
+            SettingsSection(
+                title = "Developer Options",
+                items = listOf(
+                    SettingsItemData(
+                        title = "Test Update Check",
+                        subtitle = "Manually trigger update check",
+                        icon = Icons.Default.Update,
+                        onClick = { viewModel.triggerManualUpdateCheck(context) }
+                    ),
+                    SettingsItemData(
+                        title = stringResource(id = R.string.gemini_api_settings),
+                        subtitle = if (uiState.geminiApiKey.isNotEmpty()) 
+                            stringResource(id = R.string.api_key_configured) 
+                        else 
+                            stringResource(id = R.string.configure_api_key),
+                        icon = Icons.Default.Api,
+                        onClick = { showGeminiApiDialog = true },
+                        hasEndContent = uiState.geminiApiKey.isNotEmpty(),
+                        endContentType = 1
+                    ),
+                    SettingsItemData(
+                        title = stringResource(id = R.string.manage_exercise_images),
+                        icon = Icons.Default.PhotoLibrary,
+                        onClick = onNavigateToManageImages
+                    )
+                ),
+                geminiApiTestResult = when (uiState.geminiApiTestResult) {
+                    GeminiApiTestResult.SUCCESS -> 1
+                    GeminiApiTestResult.FAILED -> 2
+                    GeminiApiTestResult.ERROR -> 3
+                    GeminiApiTestResult.TESTING -> 4
+                    else -> 0
+                }
+            )
+        }
         
         // Logout button
         Box(
@@ -231,7 +227,8 @@ fun SettingsScreen(
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 24.dp),
+                .padding(bottom = 24.dp)
+                .clickable { viewModel.onVersionClicked() },
             textAlign = TextAlign.Center
         )
     }
@@ -267,7 +264,8 @@ fun SettingsScreen(
                         onValueChange = { apiKeyText = it },
                         label = { Text(stringResource(id = R.string.api_key)) },
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        singleLine = true,
+                        isError = apiKeyText.isBlank() && uiState.geminiApiTestResult == GeminiApiTestResult.FAILED
                     )
                     
                     Spacer(modifier = Modifier.height(16.dp))
@@ -321,15 +319,24 @@ fun SettingsScreen(
                 Row {
                     TextButton(
                         onClick = {
+                            if (apiKeyText.isNotBlank()) {
                             viewModel.updateGeminiApiKey(apiKeyText)
                             viewModel.testGeminiApiKey()
                         }
+                        },
+                        enabled = apiKeyText.isNotBlank() && !uiState.isTestingGeminiApi
                     ) {
                         Text(stringResource(id = R.string.test_save))
                     }
                     
                     TextButton(
-                        onClick = { showGeminiApiDialog = false }
+                        onClick = { 
+                            // Always save the key if it's not blank before closing
+                            if (apiKeyText.isNotBlank()) {
+                                viewModel.updateGeminiApiKey(apiKeyText)
+                            }
+                            showGeminiApiDialog = false 
+                        }
                     ) {
                         Text(stringResource(id = R.string.close))
                     }
@@ -644,6 +651,10 @@ fun ChangelogDialog(onDismiss: () -> Unit) {
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
+                Text(stringResource(id = R.string.changelog_v4_5))
+                
+                Spacer(modifier = Modifier.height(16.dp))
+                
                 Text(stringResource(id = R.string.changelog_v4_0))
                 
                 Spacer(modifier = Modifier.height(16.dp))

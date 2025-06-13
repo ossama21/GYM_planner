@@ -21,6 +21,11 @@ import java.util.Locale
 import com.H_Oussama.gymplanner.GymPlannerApplication
 import com.H_Oussama.gymplanner.MainActivity
 import android.util.Log
+import kotlinx.coroutines.delay
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkInfo
+import com.H_Oussama.gymplanner.workers.UpdateWorker
 
 /**
  * ViewModel for the settings screen.
@@ -34,6 +39,10 @@ class SettingsViewModel @Inject constructor(
     // UI state for the settings screen
     private val _uiState = MutableStateFlow(SettingsUiState())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
+    
+    // Track version number clicks for developer mode
+    private var versionClickCount = 0
+    private val requiredClicksForDevMode = 4
 
     init {
         // Load user profile data from the repository
@@ -57,6 +66,10 @@ class SettingsViewModel @Inject constructor(
         // Load language setting
         val selectedLanguage = userPreferencesRepository.getLanguage()
         _uiState.update { it.copy(language = selectedLanguage) }
+        
+        // Load developer mode state
+        val isDeveloperMode = userPreferencesRepository.isDeveloperModeEnabled()
+        _uiState.update { it.copy(developerMode = isDeveloperMode) }
     }
     
     /**
@@ -92,10 +105,11 @@ class SettingsViewModel @Inject constructor(
                 useMetricSystem = userPreferencesRepository.getUnitSystem() == "METRIC",
                 isDarkTheme = userPreferencesRepository.getThemeMode() == "DARK",
                 language = userPreferencesRepository.getLanguage(),
-                appVersion = "2.0.0", // Update the app version as requested
+                appVersion = "4.5 Open-Beta", // Update the app version as requested
                 geminiApiKey = userPreferencesRepository.getGeminiApiKey(),
                 isTestingGeminiApi = false,
-                geminiApiTestResult = GeminiApiTestResult.NOT_TESTED
+                geminiApiTestResult = GeminiApiTestResult.NOT_TESTED,
+                developerMode = userPreferencesRepository.isDeveloperModeEnabled()
             )
         }
     }
@@ -201,18 +215,81 @@ class SettingsViewModel @Inject constructor(
     }
     
     /**
+     * Handle version number click to activate developer mode
+     */
+    fun onVersionClicked() {
+        versionClickCount++
+        if (versionClickCount >= requiredClicksForDevMode) {
+            // Toggle developer mode
+            val newDevMode = !_uiState.value.developerMode
+            _uiState.update { it.copy(developerMode = newDevMode) }
+            
+            // Save to preferences so it persists until app restart
+            viewModelScope.launch {
+                userPreferencesRepository.setDeveloperMode(newDevMode)
+            }
+            
+            // Reset click counter
+            versionClickCount = 0
+        }
+    }
+    
+    /**
+     * Manually trigger update check (developer option)
+     */
+    fun triggerManualUpdateCheck(context: Context) {
+        viewModelScope.launch {
+            try {
+                // Make sure developer mode is enabled when manually checking
+                if (!userPreferencesRepository.isDeveloperModeEnabled()) {
+                    userPreferencesRepository.setDeveloperMode(true)
+                    _uiState.update { it.copy(developerMode = true) }
+                }
+                
+                Toast.makeText(context, "Starting update check...", Toast.LENGTH_SHORT).show()
+                Log.d("SettingsViewModel", "Manually triggering update check")
+                
+                // Use the application's method to trigger a manual update check
+                GymPlannerApplication.triggerManualUpdateCheck(context, true)
+                
+                // Since we can't directly observe the work status anymore (it's created in another class),
+                // we'll just show a generic success message after a short delay
+                delay(1500)
+                Toast.makeText(context, "Update check completed. Check notifications for results.", Toast.LENGTH_LONG).show()
+                Log.d("SettingsViewModel", "Update check completed successfully")
+                
+            } catch (e: Exception) {
+                Log.e("SettingsViewModel", "Error triggering update check", e)
+                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    
+    /**
      * Update the Gemini API key
      */
     fun updateGeminiApiKey(apiKey: String) {
+        // Only update if the key has changed
+        if (apiKey != _uiState.value.geminiApiKey) {
+            println("DEBUG: Updating Gemini API key (length: ${apiKey.length})")
         _uiState.update { it.copy(geminiApiKey = apiKey) }
         
         // Save to UserPreferences
         viewModelScope.launch {
+                try {
             userPreferencesRepository.setGeminiApiKey(apiKey)
             
-            // Re-initialize the model
-            println("DEBUG: Initializing Gemini model with new API key (length: ${apiKey.length})")
+                    // Re-initialize the model with a slight delay to ensure preferences are saved
+                    delay(500)  // Short delay to ensure SharedPreferences commit completes
+                    println("DEBUG: Initializing Gemini model with new API key after save")
             nutritionRepository.initializeGeminiModel(apiKey)
+                } catch (e: Exception) {
+                    println("ERROR: Failed to update Gemini API key: ${e.message}")
+                    e.printStackTrace()
+                }
+            }
+        } else {
+            println("DEBUG: API key unchanged, skipping update")
         }
     }
     
@@ -228,18 +305,29 @@ class SettingsViewModel @Inject constructor(
                 geminiApiTestResult = GeminiApiTestResult.TESTING
             ) }
             
-            // Make sure the API key is initialized in the repository
+            // Get the current API key from UI state
             val apiKey = _uiState.value.geminiApiKey
-            println("DEBUG: Using API key (length: ${apiKey.length})")
+            
+            if (apiKey.isBlank()) {
+                println("ERROR: Cannot test Gemini API - key is blank")
+                _uiState.update { it.copy(
+                    isTestingGeminiApi = false,
+                    geminiApiTestResult = GeminiApiTestResult.FAILED
+                ) }
+                return@launch
+            }
+            
+            // Make sure the model is initialized with the current key
             nutritionRepository.initializeGeminiModel(apiKey)
             
             try {
-                val isValid = nutritionRepository.testGeminiApi()
-                println("DEBUG: Gemini API test completed. Result: ${if (isValid) "SUCCESS" else "FAILED"}")
+                val testSuccess = nutritionRepository.testGeminiApi()
+                
+                println("DEBUG: Gemini API test result: $testSuccess")
                 
                 _uiState.update { it.copy(
                     isTestingGeminiApi = false,
-                    geminiApiTestResult = if (isValid) GeminiApiTestResult.SUCCESS else GeminiApiTestResult.FAILED
+                    geminiApiTestResult = if (testSuccess) GeminiApiTestResult.SUCCESS else GeminiApiTestResult.FAILED
                 ) }
             } catch (e: Exception) {
                 println("ERROR: Exception during Gemini API test: ${e.message}")
@@ -248,9 +336,21 @@ class SettingsViewModel @Inject constructor(
                 _uiState.update { it.copy(
                     isTestingGeminiApi = false,
                     geminiApiTestResult = GeminiApiTestResult.ERROR,
-                    geminiApiTestError = e.localizedMessage ?: "Unknown error"
+                    geminiApiTestError = e.message ?: "Unknown error"
                 ) }
             }
+        }
+    }
+    
+    /**
+     * Toggle skip intro setting
+     */
+    fun toggleSkipIntro() {
+        val newValue = !_uiState.value.skipIntro
+        _uiState.update { it.copy(skipIntro = newValue) }
+        
+        viewModelScope.launch {
+            userPreferencesRepository.setSkipIntro(newValue)
         }
     }
 
@@ -284,26 +384,6 @@ class SettingsViewModel @Inject constructor(
         _uiState.update { it.copy(showIntroVideoOptions = !it.showIntroVideoOptions) }
     }
 
-    /**
-     * Toggle whether to skip the intro when starting the app
-     */
-    fun toggleSkipIntro() {
-        viewModelScope.launch {
-            try {
-                // Toggle the value
-                val newValue = !_uiState.value.skipIntro
-                
-                // Update preferences repository
-                userPreferencesRepository.setSkipIntro(newValue)
-                
-                // Update UI state
-                _uiState.update { it.copy(skipIntro = newValue) }
-            } catch (e: Exception) {
-                Log.e(TAG, "Error toggling skip intro setting", e)
-            }
-        }
-    }
-
     companion object {
         private const val TAG = "SettingsViewModel"
     }
@@ -329,7 +409,7 @@ data class SettingsUiState(
     
     // App state
     val isPremium: Boolean = false,
-    val appVersion: String = "2.0.0", // Updated version
+    val appVersion: String = "4.5 Open-Beta", // Updated version
     
     // Gemini API state
     val geminiApiKey: String = "",
@@ -340,7 +420,10 @@ data class SettingsUiState(
     // Intro video state
     val isIntroMuted: Boolean = false,
     val showIntroVideoOptions: Boolean = false,
-    val skipIntro: Boolean = false
+    val skipIntro: Boolean = false,
+    
+    // Developer mode state
+    val developerMode: Boolean = false
 )
 
 /**
